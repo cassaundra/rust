@@ -78,6 +78,7 @@ pretty_assertions = "1.2"
 
 [features]
 build-metrics = ["sysinfo"]
+static = ["xz2/static"]
 
 # We care a lot about bootstrap's compile times, so don't include debuginfo for
 # dependencies, only bootstrap itself.
