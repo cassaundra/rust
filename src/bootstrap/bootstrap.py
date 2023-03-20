@@ -781,15 +781,20 @@ class RustBuild(object):
             args.append("--locked")
         if self.use_vendored_sources:
             args.append("--frozen")
-        if self.get_toml("metrics", "build"):
-            args.append("--features")
-            args.append("build-metrics")
         if self.json_output:
             args.append("--message-format=json")
         if color == "always":
             args.append("--color=always")
         elif color == "never":
             args.append("--color=never")
+
+        features = []
+        if self.get_toml("metrics", "build"):
+            features += "build-metrics"
+        if self.get_toml("crt-static", build_section) == "true":
+            features += "static"
+        if features:
+            args.append("--features=" + (",".join(features)))
 
         # Run this from the source directory so cargo finds .cargo/config
         run(args, env=env, verbose=self.verbose, cwd=self.rust_root)
